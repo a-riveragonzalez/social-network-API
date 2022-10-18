@@ -1,18 +1,18 @@
 const { Schema, model } = require("mongoose");
-const assignmentSchema = require("./Assignment");
+const reactionSchema = require("./Reaction");
 
 // Schema to create User model
 const userSchema = new Schema(
   {
     username: {
       type: String,
-      // unique: true, 
+      // unique: true,
       required: true,
       // trimmed: true,
     },
     email: {
       type: String,
-      // unique: true, 
+      // unique: true,
       required: true,
       // todo validate email address
     },
@@ -38,7 +38,7 @@ const userSchema = new Schema(
   }
 );
 
-// todo virtuals go here 
+// todo virtuals go here
 // friendCount  retrieves the length of the user's friends array field on query
 
 const User = model("user", userSchema);
