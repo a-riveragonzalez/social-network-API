@@ -1,3 +1,4 @@
+// make this users 
 const names = [
   "Aaran",
   "Aaren",
@@ -74,6 +75,7 @@ const names = [
   "Parker",
 ];
 
+// make this thoughts
 const appDescriptions = [
   "Decision Tracker",
   "Find My Phone",
