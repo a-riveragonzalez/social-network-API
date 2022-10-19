@@ -77,24 +77,27 @@ module.exports = {
 
   // Add a reaction to a user
   addReaction(req, res) {
-    User.findOneAndUpdate(
+    console.log(req.body, req.params)
+    Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
       { $addToSet: { reactions: req.body } },
       { runValidators: true, new: true }
     )
-      .then((user) =>
+      .then((user) =>{
         !user
           ? res.status(404).json({ message: "No thought found with that ID :(" })
           : res.json(user)
-      )
-      .catch((err) => res.status(500).json(err));
+        })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json(err)});
   },
 
   // Remove a reaction from a user
   removeReaction(req, res) {
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
-      { $pull: { reaction: { reactionId: req.params.reactionId } } },
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } },
       { runValidators: true, new: true }
     )
       .then((user) =>
