@@ -50,7 +50,7 @@ module.exports = {
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No thought with that ID" })
-          : user.deleteMany({ _id: { $in: thought.users } })
+          : User.deleteMany({ _id: { $in: thought.users } })
       )
       .then(() => res.json({ message: "Thought and users deleted!" }))
       .catch((err) => res.status(500).json(err));
@@ -70,6 +70,12 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+
+  // todo /api/thoughts/:thoughtId/reactions
+
+  // POST to create a reaction stored in a single thought's reactions array field
+
+  // DELETE to pull and remove a reaction by the reaction's reactionId value
 
   // Add an reaction to a user
   addReaction(req, res) {
