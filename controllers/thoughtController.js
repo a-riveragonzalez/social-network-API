@@ -71,29 +71,26 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // todo /api/thoughts/:thoughtId/reactions
+  // todo POST to create a reaction stored in a single thought's reactions array field
 
-  // POST to create a reaction stored in a single thought's reactions array field
+  // todo DELETE to pull and remove a reaction by the reaction's reactionId value
 
-  // DELETE to pull and remove a reaction by the reaction's reactionId value
-
-  // Add an reaction to a user
+  // Add a reaction to a user
   addReaction(req, res) {
-    console.log("You are adding an reaction");
-    console.log(req.body);
     User.findOneAndUpdate(
-      { _id: req.params.userId },
+      { _id: req.params.thoughtId },
       { $addToSet: { reactions: req.body } },
       { runValidators: true, new: true }
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with that ID :(" })
+          ? res.status(404).json({ message: "No thought found with that ID :(" })
           : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Remove reaction from a user
+
+  // Remove a reaction from a user
   removeReaction(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
