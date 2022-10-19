@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 const reactionSchema = require('./Reaction');
-
+const moment = require('moment');
 
 // Schema to create a thought model
 const thoughtSchema = new Schema(
@@ -8,29 +8,29 @@ const thoughtSchema = new Schema(
     thoughtText: {
       type: String,
       required: true,
-      // todo 1-280 characters
+      maxlength: 280,
+      minlength: 1, 
     },
     createdAt: {
       type: Date,
       default: Date.now(),
-      // todo Use a getter method to format the timestamp on query
+      get: (date) => {
+        // MMM DD, YYYY at hh:mma
+        const formattedDate = moment(date).format("MMM DD, YYYY [at] hh:mma")
+        return formattedDate
+      }
     },
-    username: [
-      {
-        type: Schema.Types.ObjectId,
-        // ? type string?
-        // ? required: true,
-        ref: "User",
-      },
-    ],
-    // todo reactions: [
-    //   Array of nested documents created with the reactionSchema
-    // ],
+    username: {
+      type: String,
+      required: true,
+      // ref: "user",
+    },
     reactions: [reactionSchema],
   },
   {
     toJSON: {
       virtuals: true,
+      getters: true
     },
     id: false,
   }

@@ -1,38 +1,35 @@
 const { ObjectId } = require("mongoose").Types;
 const { User, Thought } = require("../models");
 
-// Aggregate function to get the number of users overall
-const headCount = async () =>
-  User.aggregate()
-    .count("userCount")
-    .then((numberOfUsers) => numberOfUsers);
+// // Aggregate function to get the number of users overall
+// const headCount = async () =>
+//   User.aggregate()
+//     .count("userCount")
+//     .then((numberOfUsers) => numberOfUsers);
 
-// Aggregate function for getting the overall grade using $avg
-const grade = async (userId) =>
-  User.aggregate([
-    // only include the given user by using $match
-    { $match: { _id: ObjectId(userId) } },
-    {
-      $unwind: "$reactions",
-    },
-    {
-      $group: {
-        _id: ObjectId(userId),
-        overallGrade: { $avg: "$reactions.score" },
-      },
-    },
-  ]);
+// // Aggregate function for getting the overall grade using $avg
+// const grade = async (userId) =>
+//   User.aggregate([
+//     // only include the given user by using $match
+//     { $match: { _id: ObjectId(userId) } },
+//     {
+//       $unwind: "$reactions",
+//     },
+//     {
+//       $group: {
+//         _id: ObjectId(userId),
+//         overallGrade: { $avg: "$reactions.score" },
+//       },
+//     },
+//   ]);
 
 module.exports = {
   // Get all users
   getUsers(req, res) {
     User.find()
+      .populate("thoughts")
       .then(async (users) => {
-        const userObj = {
-          users,
-          headCount: await headCount(),
-        };
-        return res.json(userObj);
+        return res.json(users);
       })
       .catch((err) => {
         console.log(err);
@@ -42,14 +39,11 @@ module.exports = {
   // Get a single user
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      .select("-__v")
+      .select("-__v") // we can remove password by doing this (not include)
       .then(async (user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
-          : res.json({
-              user,
-              grade: await grade(req.params.userId),
-            })
+          : res.json(user)
       )
       .catch((err) => {
         console.log(err);
@@ -68,10 +62,10 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No such user exists" })
-          : Thought.findOneAndUpdate(
-              { users: req.params.userId },
-              { $pull: { users: req.params.userId } },
-              { new: true }
+          : Thought.deleteMany(
+              { _id: {
+                $in: user.thoughts
+              } },
             )
       )
       .then((thought) =>

@@ -10,10 +10,8 @@ const reactionSchema = new Schema(
       type: String,
       required: true,
       maxlength: 280,
-      // minlength: 4,
-      // default: "Unnamed reaction",
+
     },
-    // ? hmmm... is this how to do this
     username: {
       type: String,
       required: true,
@@ -21,7 +19,11 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      // todo Use a getter method to format the timestamp on query
+      get: (date) => {
+        // MMM DD, YYYY at hh:mma
+        const formattedDate = moment(date).format("MMM DD, YYYY [at] hh:mma")
+        return formattedDate
+      }
     },
   },
   {

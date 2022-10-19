@@ -6,33 +6,32 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      // unique: true,
+      unique: true,
       required: true,
-      // trimmed: true,
+      trim: true,
     },
     email: {
       type: String,
-      // unique: true,
+      unique: true,
       required: true,
       // todo validate email address
     },
     thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Thought",
+        ref: "thought",
       },
     ],
     friends: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
       },
     ],
   },
   {
     toJSON: {
       virtuals: true,
-      // todo where the f*** do virtuals go?
       getters: true,
     },
   }
