@@ -14,7 +14,7 @@ const userSchema = new Schema(
       type: String,
       unique: true,
       required: true,
-      // todo validate email address
+      match: [/.+\@.+\..+/, 'Please fill a valid email address']
     },
     thoughts: [
       {
@@ -37,8 +37,10 @@ const userSchema = new Schema(
   }
 );
 
-// todo virtuals go here
-// friendCount  retrieves the length of the user's friends array field on query
+// virtual that retrieves the length of the user's friends
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
+});
 
 const User = model("user", userSchema);
 

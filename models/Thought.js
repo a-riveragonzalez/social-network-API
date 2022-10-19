@@ -23,7 +23,6 @@ const thoughtSchema = new Schema(
     username: {
       type: String,
       required: true,
-      // ref: "user",
     },
     reactions: [reactionSchema],
   },
@@ -36,8 +35,10 @@ const thoughtSchema = new Schema(
   }
 );
 
-// todo virtual reactionCount
-// retrieves the length of the thought's reactions array field on query.
+// virtual that retrieves the length of the thought's reactions array
+thoughtSchema.virtual('reactionCount').get(function () {
+  return this.reactions.length;
+});
 
 const Thought = model("thought", thoughtSchema);
 
