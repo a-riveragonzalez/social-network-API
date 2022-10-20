@@ -82,7 +82,7 @@ module.exports = {
       { _id: req.params.thoughtId },
       { $addToSet: { reactions: req.body } },
       { runValidators: true, new: true }
-    )
+    ) 
       .then((user) =>{
         !user
           ? res.status(404).json({ message: "No thought found with that ID :(" })
