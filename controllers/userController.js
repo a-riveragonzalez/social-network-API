@@ -40,7 +40,7 @@ module.exports = {
     User.findOneAndRemove({ _id: req.params.userId })
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No such user exists" })
+          ? res.status(404).json({ message: "Alas, no such user exists" })
           : Thought.deleteMany({
               _id: {
                 $in: user.thoughts,
@@ -96,7 +96,7 @@ module.exports = {
   removeFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $pull: { friends:  req.params.friendsId  } }, //?
+      { $pull: { friends:  req.params.friendsId  } }, 
       { runValidators: true, new: true }
     )
       .then((user) =>
