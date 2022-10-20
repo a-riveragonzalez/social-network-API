@@ -55,7 +55,7 @@ https://drive.google.com/file/d/1UhmBqqr9sJS9iN2e4f5VNl-pkpgPfVnB/view?usp=shari
 https://github.com/a-riveragonzalez/social-network-API
 
 ## Preview
-![social-media-api-gif](assets/social-media-api.gif)
+![social-media-api-gif](social-media-api.gif)
 
 ## Questions
 
